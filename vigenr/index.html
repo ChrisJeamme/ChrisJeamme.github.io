@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <title>Vigen.R</title>
+        <!-- <link rel="shortcut icon" href="../images/fav_icon.png" type="image/x-icon"> -->
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+        <link href="https://fonts.googleapis.com/css?family=Open+Sans" rel="stylesheet">
+        <!-- Bulma Version 0.7.1-->
+        <link rel="stylesheet" href="node_modules/bulma/css/bulma.min.css" />
+        <link rel="stylesheet" href="css/pages.css" />
+        <link rel="stylesheet" href="css/particules-js.css" />
+    </head>
+    <body>
+        
+        <!-- Scripts -->
+        <script src="js/pagesManagement.js"></script>
+        <script src="js/vigenere.js"></script>
+
+        <section class="hero is-bold is-info">
+            <div id="particles-js"></div>
+            <div class="hero-head"> <!-- Barre du haut -->
+                <nav class="navbar">
+                    <div class="container">
+                        <div class="navbar-brand">
+                            <a class="navbar-item closeMod">
+                                <h2 class="is-title is-2"><i class="fa fa-bomb"></i> Vigen.R</h2>
+                            </a>
+                        </div>
+                        <div id="navbarMenu" class="navbar-menu">
+                            <div class="navbar-end">
+                                <div class="tabs is-right">
+                                    <!-- <ul>
+                                        <li class="is-active"><a>Accueil</a></li>
+                                        <li><a href="">Aide</a></li>
+                                    </ul> -->
+                                    <span class="navbar-item">
+                                        <a class="button is-white is-outlined" href="https://github.com/ChrisJeamme/Vigen.R">
+                                            <span class="icon">
+                                                <i class="fa fa-github"></i>
+                                            </span>
+                                            <span>Code Source</span>
+                                        </a>
+                                    </span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </nav>
+            </div>
+            <div class="hero-body"> <!-- Contenu central -->
+                <div class="container has-text-centered">
+                    <h1 class="title">
+                        Chiffre de Vigenère
+                    </h1>
+                    
+                    <button class="button is-rounded is-large is-link" id="encodingMod">Encodage/Décodage</button> <br /><br />
+                    <button class="button is-rounded is-large is-link" id="attackMod">Attaque</button>
+
+                    <div id="encodingSection" class="hide"> <!-- Partie Encodage / Décodage -->
+                        <button class="closeMod button is-large is-danger is-rounded" hidden>Retour</button> <!-- Bouton de fermeture du mode -->
+
+                        <div class="columns">
+                            <div class="column">
+                                <h1 class="title">
+                                    Message clair
+                                </h1>
+                                <h2 class="subtitle">
+                                    Tapez votre message à coder
+                                </h2>
+                                <textarea id="encodingTextArea" class="textarea" placeholder="Message à coder"></textarea>
+
+                                <br />
+                                <h2 class="subtitle">
+                                    Tapez votre clé secrète
+                                </h2>
+                                <textarea id="encodingKeyTextArea" class="textarea" placeholder="Clé secrète"></textarea>
+                            </div>
+                            <div class="column is-inline-flex" style="flex-direction: column; justify-content: center;">
+                                <button id="encodingButton" class="codeButton button is-rounded is-link is-large is-fullwidth"><i class="fa fa-angle-double-right"></i></button>
+                                <button id="decodingButton" class="codeButton button is-rounded is-link is-large is-fullwidth"><i class="fa fa-angle-double-left"></i></button>
+                               </div>
+                            <div class="column">
+                                <h1 class="title">
+                                    Message chiffré
+                                </h1>
+                                <h2 class="subtitle">
+                                    Tapez votre message à décoder
+                                </h2>
+                                <textarea id="decodingTextArea" class="textarea" placeholder="Message à décoder"></textarea>
+                                
+                                <br />
+                                <h2 class="subtitle">
+                                    Tapez votre clé secrète
+                                </h2>
+                                <textarea id="decodingKeyTextArea" class="textarea" placeholder="Clé secrète"></textarea>
+                            </div>
+                        </div>
+
+                        <button id="attackButton" class="button is-rounded is-danger is-large"><!-- <i class="fa fa-angle-double-left"></i> --><i class="fa fa-bomb m-5"></i></button>
+                    
+                        
+                    </div>
+
+                    <div id="attackSection" class="hide"> <!-- Partie Attaque -->
+                        <button class="closeMod button is-large is-danger is-rounded" hidden>Retour</button> <!-- Bouton de fermeture du mode -->
+                        <br />
+                        <br />
+
+                        <h1 class="title">
+                            Message chiffré
+                        </h1>
+                        <h2 class="subtitle">
+                            Tapez votre message chiffré à attaquer afin de trouver le message d'origine
+                        </h2>
+                        <textarea id="encodingTextArea" class="textarea" placeholder="Message à coder"></textarea>
+                    </div>
+
+                </div>
+            </div>
+        </section>
+        <footer class="footer"> <!-- Barre du bas -->
+            <div class="container">
+                <div class="content has-text-centered">
+                    <button class="button" disabled>
+                        Project Team of the Dungeon Quest
+                    </button>
+                </div>
+            </div>
+        </footer>
+
+        <script src="http://cdn.jsdelivr.net/particles.js/2.0.0/particles.min.js"></script>
+        <script src="js/particules-js.js"></script>
+
+        <script>
+            pageInitialisation();
+        </script>
+    </body>
+</html>

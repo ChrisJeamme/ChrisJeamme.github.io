@@ -1,0 +1,19 @@
+.hide
+{
+    display: none !important; 
+}
+
+.navbar-brand
+{
+    font-size: 2em;
+}
+
+.error
+{
+    border: 2px solid #ff3860;
+}
+
+.codeButton
+{
+    margin: 5px;
+}
