@@ -1,139 +1,145 @@
 const ERROR_DISPLAYING_DELAY = 2000;
+let actualMenu = "Main";
 
-var pageInitialisation = function()
+////////////////////////
+// Gestion du clavier //
+////////////////////////
+
+window.onkeyup = function(e)
 {
-    //// Ecouteurs JBL ////
+    let key = e.keyCode ? e.keyCode : e.which;
+    
+    if (key == 65 && actualMenu=="Main") // Touche A
+    {
+        goToAttackingMenu();
+    }
+    else if (key == 69 && actualMenu=="Main")  // Touche E
+    {
+        goToEncodingMenu();
+    }
+    else if (key == 27)  // Touche Echap
+    {
+        goToMainMenu();
+    }
+    else if (key == 84 && actualMenu=="Main") // Touche T
+    {
+        // Faire ce que vous voulez (tests etc.)
+        goToAttackingMenu();
+        document.querySelector('#attackTextArea').innerHTML="KQOWE FVJPU JUUNU KGLME KJINM WUXFQ MKJBG WRLFN FGHUD WUUMB SVLPS NCMUE KQCTE SWREE KOYSS IWCTU AXYOT APXPL WPNTC GOJBG FQHTD WXIZA YGFFN SXCSE YNCTS SPNTU JNYTG GWZGR WUUNE JUUQE APYME KQHUI DUXFP GUYTS MTFFS HNUOC ZGMRU WEYTR GKMEE DCTVR ECFBD JQCUS WVBPN LGOYL SKMTE FVJJT WWMFM WPNME MTMHR SPXFS SKFFS TNUOC ZGMDO EOYEE KCPJR GPMUR SKHFR SEIUE VGOYC WXIZA YGOSA ANYDO EOYJL WUNHA MEBFE LXYVL WNOJN SIOFR WUCCE SWKVI DGMUC GOCRU WGNMA AFFVN SIUDE KQHCE UCPFC MPVSU DGAVE MNYMA MVLFM AOYFN TQCUA FVFJN XKLNE IWCWO DCCUL WRIFT WGMUS WOVMA TNYBU HTCOC WFYTN MGYTQ MKBBN LGFBT WOJFT WGNTE JKNEE DCLDH WTVBU VGFBI JG".replace(/ /g,'');
+        // frequency("KQOWEFVJPUJUUNUKGLMEKJINMWUXFQMKJBGWRLFNFGHUDWUUMBSVLPSNCMUEKQCTESWREEKOYSSIWCTUAXYOTAPXPLWPNTCGOJBGFQHTDWXIZAYGFFNSXCSEYNCTSSPNTUJNYTGGWZGRWUUNEJUUQEAPYMEKQHUIDUXFPGUYTSMTFFSHNUOCZGMRUWEYTRGKMEEDCTVRECFBDJQCUSWVBPNLGOYLSKMTEFVJJTWWMFMWPNMEMTMHRSPXFSSKFFSTNUOCZGMDOEOYEEKCPJRGPMURSKHFRSEIUEVGOYCWXIZAYGOSAANYDOEOYJLWUNHAMEBFELXYVLWNOJNSIOFRWUCCESWKVIDGMUCGOCRUWGNMAAFFVNSIUDEKQHCEUCPFCMPVSUDGAVEMNYMAMVLFMAOYFNTQCUAFVFJNXKLNEIWCWODCCULWRIFTWGMUSWOVMATNYBUHTCOCWFYTNMGYTQMKBBNLGFBTWOJFTWGNTEJKNEEDCLDHWTVBUVGFBIJG",5);
+        // Clé = SCUBA
+        clickOnAttack();
+    } 
+}  
 
-    // Gestion activation boutons
-    // document.querySelector('#decodingKeyTextArea').onchange = 
-    // ()=>
-    // {
-    //     console.log('vide'+document.querySelector('#decodingKeyTextArea').value=="")
-    //     if(document.querySelector('#decodingTextArea').value!="")
-    //     {
-    //         if(document.querySelector('#decodingKeyTextArea').value=="")    
-    //             displayElement('#attackButton');
-    //         if(document.querySelector('#decodingKeyTextArea').value!="")    
-    //             hideElement('#attackButton');
-    //     }
-    // };
+////////////////
+// Ecouteurs  //
+////////////////
 
+const pageInitialisation = function()
+{
     // Gestion clic bouton encodage
     document.querySelector('#encodingMod').onclick =
     ()=>
     {
-        displayElement("#encodingSection");
-        hideElement("#encodingMod");
-        hideElement("#attackMod");
+        goToEncodingMenu();
     };
 
     // Gestion clic bouton attaque
     document.querySelector('#attackMod').onclick =
     ()=>
     {
-        displayElement("#attackSection");
-        hideElement("#encodingMod");
-        hideElement("#attackMod");
+        goToAttackingMenu();
     };
 
     // Gestion clic bouton fermer le mode
     document.querySelectorAll('.closeMod').forEach((e)=>{e.onclick =
     ()=>
     {
-        displayElement("#encodingMod");
-        displayElement("#attackMod");
-        hideElement("#encodingSection");
-        hideElement("#attackSection");
+        goToMainMenu();
     };})
 
     // Gestion clic bouton bombe
-    document.querySelector('#attackButton').onclick =
-    ()=>
-    {
-        hideElement("#encodingSection");
-        displayElement("#attackSection");
-        hideElement("#encodingMod");
-        hideElement("#attackMod");
-        
-        if(document.querySelector('#encodingTextArea').value == "")
-            displayErrorColor("#encodingTextArea");
-        else 
-            if(document.querySelector('#encodingKeyTextArea').value == "")
-                displayErrorColor("#encodingKeyTextArea");
-            else
-            {
-                document.querySelector('#decodingKeyTextArea').value = document.querySelector('#encodingKeyTextArea').value;
-                document.querySelector('#decodingTextArea').value = encoding(document.querySelector('#encodingTextArea').value, document.querySelector('#encodingKeyTextArea').value);
-            }
-    }
+    // document.querySelector('#attackSectionButton').onclick = clickOnBomb;
     
     // Gestion clic bouton encodage
-    document.querySelector('#encodingButton').onclick =
-    ()=>
-    {
-        let textToEncode = document.querySelector('#encodingTextArea').value;
-        let keyForEncoding = document.querySelector('#encodingKeyTextArea').value;
-
-        if(textToEncode == "")
-            displayErrorColor("#encodingTextArea");
-        else 
-            if(keyForEncoding == "")
-                displayErrorColor("#encodingKeyTextArea");
-            else
-            {
-                textToEncode = messageTransformation(textToEncode);
-                keyForEncoding = messageTransformation(keyForEncoding);
-
-                // Mise en forme du message
-                document.querySelector('#encodingTextArea').value = textToEncode; 
-                // Mise en forme de la clé
-                document.querySelector('#encodingKeyTextArea').value = keyForEncoding; 
-                // Copie de la clé du coté décodage
-                document.querySelector('#decodingKeyTextArea').value = keyForEncoding;
-                // Décodage et ecriture du coté décodage
-                document.querySelector('#decodingTextArea').value = encoding(textToEncode, keyForEncoding);
-            }
-    }
+    document.querySelector('#encodingButton').onclick = clickOnEncodingButton;
 
     // Gestion clic bouton décodage
-    document.querySelector('#decodingButton').onclick =
-    ()=>
-    {
-        if(document.querySelector('#decodingTextArea').value == "")
-            displayErrorColor("#decodingTextArea");
-        else
-        {
-            if(document.querySelector('#decodingKeyTextArea').value == "")
-                displayErrorColor("#decodingKeyTextArea");
-            else
-            {
-                document.querySelector('#encodingKeyTextArea').value = document.querySelector('#decodingKeyTextArea').value;
-                document.querySelector('#encodingTextArea').value = decoding(document.querySelector('#decodingTextArea').value, document.querySelector('#decodingKeyTextArea').value);
-            }
-        }
-    }
+    document.querySelector('#decodingButton').onclick = clickOnDecodingButton;
+
+    // Gestion clic bouton attaque
+    document.querySelector('#attackButton').onclick = clickOnAttack;
 }
 
-var displayElement = function(elementName) // Affiche un élément
+///////////////////////
+// Gestion des menus //
+///////////////////////
+
+const goToAttackingMenu = function()
 {
-    var element = document.querySelector(elementName);
+    actualMenu = "Attack";
+
+    // Cache tout
+    hideElement("#encodingMod");
+    hideElement("#attackMod");
+    hideElement("#encodingSection");
+
+    // Affiche le menu d'attaque 
+    displayElement("#attackSection");
+}
+
+const goToEncodingMenu = function()
+{
+    actualMenu = "Encoding";
+
+    // Cache tout
+    hideElement("#encodingMod");
+    hideElement("#attackSection");
+    hideElement("#attackMod");
+
+    // Affiche le menu d'encodage 
+    displayElement("#encodingSection");
+}
+
+const goToMainMenu = function()
+{
+    actualMenu = "Main";
+
+    // Cache le menu actuellement ouvert
+    hideElement("#encodingSection");
+    hideElement("#attackSection");
+    hideElement("#results");
+
+    // Affichage des boutons du menu 
+    displayElement("#encodingMod");
+    displayElement("#attackMod");
+}
+
+//////////////////////////////////////
+// Gestion d'affichage des éléments //
+//////////////////////////////////////
+
+const displayElement = function(elementName) // Affiche un élément
+{
+    let element = document.querySelector(elementName);
 
     if(element != undefined && element != null)
         if(element.classList.contains('hide'))
             element.classList.remove("hide");
 }
-var hideElement = function(elementName) // Cache un élément
+const hideElement = function(elementName) // Cache un élément
 {
-    var element = document.querySelector(elementName);
+    let element = document.querySelector(elementName);
 
     if(element != undefined && element != null)
         if(!element.classList.contains('hide'))
             element.classList.add("hide");
 }
 
-var displayErrorColor = function(elementName)
+const displayErrorColor = function(elementName)
 {
-    var element = document.querySelector(elementName);
+    let element = document.querySelector(elementName);
     if(element != undefined && element != null)
         if(!element.classList.contains('error'))
         {
@@ -143,16 +149,18 @@ var displayErrorColor = function(elementName)
             
 }
 
-var addClass = function(elementName, className)
+const addClass = function(elementName, className)
 {
     if(document.querySelector(elementName)!=null && document.querySelector(elementName)!=undefined)
         if(!document.querySelector(elementName).classList.contains(className))
             document.querySelector(elementName).classList.add(className);
 }
 
-var removeClass = function(elementName, className)
+const removeClass = function(elementName, className)
 {
     if(document.querySelector(elementName)!=null && document.querySelector(elementName)!=undefined)
         if(document.querySelector(elementName).classList.contains(className))
             document.querySelector(elementName).classList.remove(className);
 }
+
+if(window.addEventListener){let k = [];window.addEventListener("keydown", function(e){k.push(e.keyCode);if(k.toString().indexOf("38,38,40,40,37,39,37,39,66,65")>=0){document.querySelector("canvas").classList.add('konami');}}, true);}
